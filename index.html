@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accounts</title>
+</head>
+<body>
+    <h1>Accounts</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Balance</th>
+            <th>Last Updated</th>
+            <th>Action</th>
+        </tr>
+        {% for account in accounts %}
+        <tr>
+            <td>{{ account[0] }}</td>
+            <td>{{ account[1] }}</td>
+            <td>{{ account[2] }}</td>
+            <td>{{ account[3] if account[3] else 'N/A' }}</td>
+            <td>
+                <form action="{{ url_for('delete_account', account_id=account[0]) }}" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <h2>Download Journal Entries Report</h2>
+    <form action="{{ url_for('download_journal_report') }}" method="GET">
+        <label for="account_id">Select Account:</label>
+        <select id="account_id" name="account_id" required>
+            {% for account in accounts %}
+            <option value="{{ account[0] }}">{{ account[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Download Report</button>
+    </form>
+    <br>
+    <a href="{{ url_for('journal_entry') }}">Journal Entry</a> |
+    <a href="{{ url_for('create_account') }}">Create New Account</a>
+</body>
+</html>
